@@ -1,0 +1,14 @@
+{
+    "name": "e2e-transaction-logger",
+    "version": "0.0.1",
+    "description": "Transaction log interface",
+    "main": "./lib/public.js",
+    "dependencies": {
+    },
+    "devDependencies": {
+        "nodeunit": "0.8.6",
+        "commander": "2.1.0",
+        "istanbul": "0.2.6"
+    },
+    "author": "Cyril Schmitt"
+}
