@@ -1,0 +1,7 @@
+.idea
+coverage
+test
+example
+coverage.bat
+.gitignore
+.npmignore
