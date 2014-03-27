@@ -10,7 +10,8 @@
     "devDependencies": {
         "nodeunit": "0.8.6",
         "commander": "2.1.0",
-        "istanbul": "0.2.6"
+        "istanbul": "0.2.6",
+        "express": "3.4.8"
     },
     "author": "Cyril Schmitt"
 }
