@@ -1,11 +1,11 @@
 # E2E transaction logger #
 
 
-Having structured logs of running services is always important in productions. E2E transactions log files contains all information about the interaction of your server. Separated in transactions which represent the client calls (http) and io calls which represent the back end calls made by your server (DB, file system ...).
+Having structured logs of running services is always important in productions. E2E transactions log files contains all information about the interactions on your server. Separated in transactions which represent the client calls (http) and io calls which represent the back end calls made by your server (DB, file system ...).
 
 In another level you can also trace business processes using the same library in the same files which allow to relate the business data level with the service level.
 
-These files can then be parsed and loaded in DB to be used in Dashboards showing good system, operating and business views and report of your services.
+These files can then be parsed and loaded in DB to be used in Dashboards showing good system, operating and business views and reports of your services.
 
 
 ## Quick Example
@@ -31,7 +31,7 @@ These files can then be parsed and loaded in DB to be used in Dashboards showing
 
 ## Download
 
-    npm install async
+    npm install e2e-transaction-logger
 
 ## Documentation
 
@@ -39,7 +39,7 @@ These files can then be parsed and loaded in DB to be used in Dashboards showing
 
 A transaction logger allow to start transactions.
 
-#### constructor(logPath)
+#### TransactionLogger.constructor(logPath)
 
 You can create your own transaction logger using the constructor.
 
@@ -55,9 +55,9 @@ __Example__
 
 ---
 
-#### startTransaction(name)
+#### TransactionLogger.startTransaction(name)
 
-Start a transaction and return a Transaction object.
+Trace the start of a transaction and return a Transaction object.
 
 __Arguments__
 
@@ -83,7 +83,7 @@ __Example__
 
 ---
 
-#### constructor(logPath)
+#### ProcessLogger.constructor(logPath)
 
 You can create your own process logger using the constructor.
 
@@ -97,7 +97,7 @@ __Example__
 
 ---
 
-#### processStart(processName, processId, eventName)
+#### ProcessLogger.processStart(processName, processId, eventName)
 
 Trace the start of a process.
 
@@ -113,7 +113,7 @@ __Example__
 
 ---
 
-#### processEnd(processName, processId, eventName)
+#### ProcessLogger.processEnd(processName, processId, eventName)
 
 Trace the end of a process.
 
@@ -129,7 +129,7 @@ __Example__
 
 ---
 
-#### processStateStart(processName, processId, stateName)
+#### ProcessLogger.processStateStart(processName, processId, stateName)
 
 Trace the start of a state.
 
@@ -145,7 +145,7 @@ __Example__
 
 ---
 
-#### processStateEnd(processName, processId, stateName)
+#### ProcessLogger.processStateEnd(processName, processId, stateName)
 
 Trace the end of a state.
 
@@ -161,7 +161,7 @@ __Example__
 
 ---
 
-#### processChoice(processName, processId, gateway, choice)
+#### ProcessLogger.processChoice(processName, processId, gateway, choice)
 
 Trace a choice.
 
@@ -178,7 +178,7 @@ __Example__
 
 ---
 
-#### processEvent(processName, processId, eventName)
+#### ProcessLogger.processEvent(processName, processId, eventName)
 
 Trace an event.
 
@@ -186,7 +186,7 @@ __Arguments__
 
 * processName - The name of the process
 * processId - The process id.
-* eventName - The gateway name.
+* eventName - The event name.
 
 __Example__
 
@@ -194,7 +194,7 @@ __Example__
 
 ---
 
-#### processValueString(processName, processId,  key, value)
+#### ProcessLogger.processValueString(processName, processId,  key, value)
 
 Trace a value in a String type.
 
@@ -211,7 +211,7 @@ __Example__
 
 ---
 
-#### processValueFloat(processName, processId,  key, value)
+#### ProcessLogger.processValueFloat(processName, processId,  key, value)
 
 Trace a value in a Float type.
 
@@ -224,11 +224,11 @@ __Arguments__
 
 __Example__
 
-	processLogger.processValueString('ProcessName', 'processId', 'Key', 123.456);
+	processLogger.processValueFloat('ProcessName', 'processId', 'Key', 123.456);
 
 ---
 
-#### processValueDateTime(processName, processId,  key, value)
+#### ProcessLogger.processValueDateTime(processName, processId,  key, value)
 
 Trace a value in a Date type.
 
@@ -247,5 +247,100 @@ __Example__
 
 ### Transaction
 
-A Transaction object is return by the startTransaction method of a transaction logger. It is then used to trace what happen inside a the transaction using startIO or any ProcessLogger method. Using a transactions to trace a process instead of directly a ProcessLogger allow you to link the process steps to the transactions and ios of these transactions.
+A Transaction object is returned by the startTransaction method of a TransactionLogger. It is then used to trace what happen inside the transaction using startIO or any ProcessLogger method. Using transactions to trace a processes instead of directly a ProcessLogger allow you to link the process steps to the transactions and ios of these transactions.
 
+#### Transaction.end(state)
+
+Trace the end of a transaction
+
+__Arguments__
+
+* state - The state of the transaction. It can be true or 'OK' for a success, false or 'ERROR' for a failed. Default: 'OK'
+
+__Example__
+
+	var trx = transactionLogger.stratTransaction('MyTransaction');
+	
+	// do some things
+
+	trx.end();
+
+---
+
+#### Transaction.startIO(name, domain, system)
+
+Trace the start of an IO call and return an IO object.
+
+__Arguments__
+
+* name - the name of the IO call
+* domain - the domain of the IO call
+* system - the system of the IO call
+
+__Example__
+
+	var io = trx.startIO('SELECT Users','SQL','oracle/XE');
+
+---
+
+### IO
+
+An IO object is returned by the startIO method of a Transaction. It is then used to trace then end of the io call.
+
+#### IO.end(state)
+
+Trace the end of an io call
+
+__Arguments__
+
+* state - The state of the io. It can be true or 'OK' for a success, false or 'ERROR' for a failed. Default: 'OK'
+
+__Example__
+
+	var io = trx.startIO('Read','FILE','HelloWorld.txt');
+
+    fs.readFile(__dirname + '/resource/HelloWorld.html',function(err, data){
+        io.end();
+    });
+
+---
+
+### transactionLoggerMiddleware(options)
+
+A function that returns a middle ware which can be used with express. It will automatically start a transaction when a request arrives and end it when the response is sent. The Transaction object will be available in the request object as trx.
+
+__Arguments__
+
+* options - object
+	* logPath - The path where the log files will be written.
+	* name - The name that should be given to the transactions. Can be a function taking the request and result as parameter and returning the name. By default the name will be the url of the request.
+
+
+__Example__
+
+	
+	var express = require('express');
+	var fs = require('fs');
+	var transactionLoggerMiddleware = require('e2e-transaction-logger').transactionLoggerMiddleware;
+
+	var app = express();
+
+	app.use(transactionLoggerMiddleware());
+
+	app.get('/hello.html', function(req, res){
+	    var io = req.trx.startIO('Read','FILE','HelloWorld.html');
+	
+	    fs.readFile(__dirname + '/resource/HelloWorld.html',function(err, data){
+	        if(err){
+	            io.end('ERROR');	
+	            res.send(503, err);	// the status code define if the transaction failed or succeed. >= 400 it failed
+	            return;
+	        }
+	
+	        io.end();
+	        res.set('Content-Type', 'text/html');
+	        res.send(data);
+	    });
+	});
+
+---
