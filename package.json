@@ -1,7 +1,20 @@
 {
     "name": "e2e-transaction-logger",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Transaction log interface",
+    "keywords":[
+        "e2e",
+        "logger",
+        "transactions",
+        "request",
+        "backend",
+        "io",
+        "process",
+        "bpmn"
+    ],
+    "author": "support@e2ebridge.com",
+    "license": "MIT",
+    "repository": "git://github.com/e2ebridge/e2e-transaction-logger",
     "main": "./lib/public.js",
     "dependencies": {
         "fs-extra": "0.8.1",
@@ -12,6 +25,5 @@
         "commander": "2.1.0",
         "istanbul": "0.2.6",
         "express": "3.4.8"
-    },
-    "author": "Cyril Schmitt"
+    }
 }
