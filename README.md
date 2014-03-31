@@ -1,3 +1,6 @@
+[![E2E logo](docs/e2ebridge-logo.png)](http://e2ebridge.com)
+
+
 # E2E transaction logger #
 
 
