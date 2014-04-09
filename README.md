@@ -4,11 +4,11 @@
 # E2E transaction logger #
 
 
-Having structured logs of running services is always important in productions. E2E transactions log files contains all information about the interactions on your server. Separated in transactions which represent the client calls (http) and io calls which represent the back end calls made by your server (DB, file system ...).
+Having structured logs of running services is always important in productions. E2E transaction log files contain all the information about interactions on your server. That information is divided into transactions which represent the client calls (http) and io calls which represent the back end access made by your server (DB, file system ...).
 
-In another level you can also trace business processes using the same library in the same files which allow to relate the business data level with the service level.
+On another level you can also trace business processes using the same library and the same files. That allows to relate the business data level with the service level.
 
-These files can then be parsed and loaded in DB to be used in Dashboards showing good system, operating and business views and reports of your services.
+These files can then be parsed and loaded into DB to be used in Dashboards showing very informative system, operating and business views and reports of your services.
 
 
 ## Quick Example
@@ -32,7 +32,7 @@ These files can then be parsed and loaded in DB to be used in Dashboards showing
 	
 
 
-## Download
+## Installing
 
     npm install e2e-transaction-logger
 
@@ -40,7 +40,7 @@ These files can then be parsed and loaded in DB to be used in Dashboards showing
 
 ### TransactionLogger
 
-A transaction logger allow to start transactions.
+A transaction logger allows to start transactions.
 
 #### TransactionLogger.constructor(logPath)
 
@@ -52,9 +52,9 @@ __Arguments__
 
 __Example__
 
-	var transactionLogger = require('e2e-transaction-logger');
+	var TransactionLogger = require('e2e-transaction-logger').TransactionLogger;
 
-	var myTransactionLogger = new transactionLogger('my/custom/log/path');
+	var myTransactionLogger = new TransactionLogger('my/custom/log/path');
 
 ---
 
@@ -68,7 +68,7 @@ __Arguments__
 
 __Example__
 
-	var trx = transactionLogger.stratTransaction('MyTransaction');
+	var trx = transactionLogger.startTransaction('MyTransaction');
 
 ---
 
@@ -78,7 +78,7 @@ An object of type ProcessLogger.
 
 ### ProcessLogger
 
-A process logger allow to trace processes.
+A process logger allows to trace processes.
 
 __Example__
 
@@ -199,7 +199,7 @@ __Example__
 
 #### ProcessLogger.processValueString(processName, processId,  key, value)
 
-Trace a value in a String type.
+Trace a value of a String type.
 
 __Arguments__
 
@@ -216,7 +216,7 @@ __Example__
 
 #### ProcessLogger.processValueFloat(processName, processId,  key, value)
 
-Trace a value in a Float type.
+Trace a value of a Float type.
 
 __Arguments__
 
@@ -233,7 +233,7 @@ __Example__
 
 #### ProcessLogger.processValueDateTime(processName, processId,  key, value)
 
-Trace a value in a Date type.
+Trace a value of a Date type.
 
 __Arguments__
 
@@ -250,7 +250,7 @@ __Example__
 
 ### Transaction
 
-A Transaction object is returned by the startTransaction method of a TransactionLogger. It is then used to trace what happen inside the transaction using startIO or any ProcessLogger method. Using transactions to trace a processes instead of directly a ProcessLogger allow you to link the process steps to the transactions and ios of these transactions.
+A Transaction object is returned by the startTransaction method of a TransactionLogger. It is then used to trace what happens inside the transaction using startIO or any ProcessLogger method. Using transactions to trace processes instead of a ProcessLogger directly allows you to correlate the process steps and ios of these transactions.
 
 #### Transaction.end(state)
 
@@ -262,7 +262,7 @@ __Arguments__
 
 __Example__
 
-	var trx = transactionLogger.stratTransaction('MyTransaction');
+	var trx = transactionLogger.startTransaction('MyTransaction');
 	
 	// do some things
 
@@ -288,7 +288,7 @@ __Example__
 
 ### IO
 
-An IO object is returned by the startIO method of a Transaction. It is then used to trace then end of the io call.
+An IO object is returned by the startIO method of a Transaction. It is then used to trace the end of the io call.
 
 #### IO.end(state)
 
@@ -310,7 +310,7 @@ __Example__
 
 ### transactionLoggerMiddleware(options)
 
-A function that returns a middle ware which can be used with express. It will automatically start a transaction when a request arrives and end it when the response is sent. The Transaction object will be available in the request object as trx.
+A function that returns a middleware which can be used with express. It will automatically start a transaction when a request arrives and end it when the response is sent. The Transaction object will be available in the request object as trx.
 
 __Arguments__
 
