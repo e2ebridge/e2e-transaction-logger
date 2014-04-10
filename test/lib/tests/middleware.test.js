@@ -18,7 +18,7 @@ exports.defaultDef = function(test){
         if(logEntryCalls === 0){
             trxId = entry.trxId;
             requestId = entry.requestId;
-            test.equals(entry.name, '/index.html');
+            test.equals(entry.name, 'GET /index.html');
             test.equals(entry.state, 'OK');
             test.equals(entry.domain, 'INTERFACE');
             test.equals(entry.logType, 'SERVICE_ENTER');
@@ -29,7 +29,7 @@ exports.defaultDef = function(test){
         if(logEntryCalls === 1){
             test.equals(entry.trxId, trxId);
             test.equals(entry.requestId, requestId);
-            test.equals(entry.name, '/index.html');
+            test.equals(entry.name, 'GET /index.html');
             test.equals(entry.state, 'OK');
             test.equals(entry.domain, 'INTERFACE');
             test.equals(entry.logType, 'SERVICE_EXIT');
@@ -55,7 +55,8 @@ exports.defaultDef = function(test){
     });
 
     var req = {
-        url: '/index.html'
+        url: '/index.html',
+        method: 'GET'
     };
     var res = {
         end: function(){
@@ -126,7 +127,8 @@ exports.staticDef = function(test){
     });
 
     var req = {
-        url: '/index.html'
+        url: '/index.html',
+        method: 'GET'
     };
     var res = {
         end: function(){
@@ -197,7 +199,8 @@ exports.dynamicDef = function(test){
     });
 
     var req = {
-        url: '/index.html'
+        url: '/index.html',
+        method: 'GET'
     };
     var res = {
         end: function(){
