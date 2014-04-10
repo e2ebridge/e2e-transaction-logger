@@ -12,9 +12,15 @@
         "process",
         "bpmn"
     ],
-    "author": "support@e2ebridge.com",
+    "author": {
+        "name" : "E2E Technologies Ltd",
+        "email" : "support@e2ebridge.com"
+    },
     "license": "MIT",
-    "repository": "git://github.com/e2ebridge/e2e-transaction-logger",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/e2ebridge/e2e-transaction-logger.git"
+    },
     "main": "./lib/public.js",
     "dependencies": {
         "fs-extra": "0.8.1",
