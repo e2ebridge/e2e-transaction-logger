@@ -316,7 +316,7 @@ __Arguments__
 
 * options - object
 	* logPath - The path where the log files will be written.
-	* name - The name that should be given to the transactions. Can be a function taking the request and result as parameter and returning the name. By default the name will be the url of the request.
+	* name - The name that should be given to the transactions. Can be a function taking the request and result as parameter and returning the name. If it is a string some special replacement variables can be used: {METHOD}, {URL}, {URL_PATH}, {URL_PATHNAME}, {URL_QUERY}, {URL_ORIGINAL_PART}, {ORIGINAL_URL}. By default the name will be the method and the url of the request ('{METHOD} {URL}').
 
 
 __Example__
